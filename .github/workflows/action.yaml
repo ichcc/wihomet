@@ -91,7 +91,7 @@ jobs:
           #TODO: Add dynamic tags
           tags: 092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-ecr-repo:latest
   helm-install:
-    # if: ${{ github.event.inputs['helm-install'] == 'true' }}
+    if: ${{ github.event.inputs['helm-install'] == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
