@@ -2,7 +2,7 @@ name: Deploy Services
 on:
   workflow_dispatch:
     inputs:
-        region:
+        aws_region:
             description: "AWS Region"
             required: true
             default: "us-east-1"
