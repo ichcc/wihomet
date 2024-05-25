@@ -61,7 +61,7 @@ jobs:
         run: terraform -chdir=infra apply -auto-approve
 
   build-image:
-    #  if: ${{ github.event.inputs['build-image'] == 'true' }}
+    if: ${{ github.event.inputs['build-image'] == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
