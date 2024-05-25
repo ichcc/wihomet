@@ -76,7 +76,7 @@ resource "aws_iam_role" "wihoemt_eks_role" {
         {
             "Effect": "Allow",
             "Principal": {
-                "Service": "eks.amazonaws.com"
+                "Service": ["eks.amazonaws.com", "ec2.amazonaws.com"]
             },
             "Action": "sts:AssumeRole"
         }
