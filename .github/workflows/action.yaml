@@ -1,0 +1,17 @@
+name: Deploy Services
+on:
+  workflow_dispatch:
+    inputs:
+        region:
+            description: "AWS Region"
+            required: true
+            default: "us-east-1"
+        deploy-infra:
+            description: "Deploy infrastructure"
+            type: boolean
+            required: true
+            default: false
+jobs:
+    deploy-infra:
+        uses: ./.github/workflows/terraform.yml
+        if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
