@@ -23,20 +23,11 @@ jobs:
           role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
-          
-  terraform:
-      name: 'Terraform Plan'
-      runs-on: ubuntu-latest
-
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
-
-        - name: Terraform Init
-          run: terraform -chdir=infra init
-
-        - name: Terraform Plan
-          run: terraform -chdir=infra plan
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform Init
+        run: terraform -chdir=infra init
+      - name: Terraform Plan
+        run: terraform -chdir=infra plan
