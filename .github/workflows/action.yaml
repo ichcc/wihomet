@@ -25,7 +25,8 @@ jobs:
     deploy-infra:
         uses: ./.github/workflows/terraform.yml
         if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
-        secrets: inherit
+        with:
+            aws_region:  ${{ inputs.aws_region }}
     # build-image:
     #     uses: ./.github/workflows/build_app.yml
     #     if: ${{ github.event.inputs['build-image'] == 'true' }}  
