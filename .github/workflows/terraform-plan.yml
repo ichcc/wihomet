@@ -2,6 +2,10 @@ name: Terraform Plan
 
 on:
     workflow_dispatch:
+            inputs:
+              confirmApply:
+                description: 'Confirm apply? Type "yes" to confirm.'
+                required: true
 
 env:
   
