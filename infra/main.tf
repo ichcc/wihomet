@@ -26,10 +26,15 @@ resource "aws_vpc" "wihoemt-vpc" {
 }
 
 # Define Subnets
-resource "aws_subnet" "wihoemt-subnet" {
+resource "aws_subnet" "wihoemt-subnet-1" {
     vpc_id                  = aws_vpc.wihoemt-vpc.id
     cidr_block              = "10.0.1.0/24"
     availability_zone       = "us-east-1a"
+}
+resource "aws_subnet" "wihoemt-subnet-2" {
+    vpc_id                  = aws_vpc.wihoemt-vpc.id
+    cidr_block              = "10.0.3.0/24"
+    availability_zone       = "us-east-1b"
 }
 
 # Define Security Groups
@@ -86,7 +91,7 @@ resource "aws_eks_cluster" "wihomet-eks-cluster" {
     role_arn = aws_iam_role.wihoemt_eks_role.arn
     version  = "1.29"
     vpc_config {
-        subnet_ids = [aws_subnet.wihoemt-subnet.id]
+        subnet_ids = [aws_subnet.wihoemt-subnet-1.id, aws_subnet.wihoemt-subnet-2.id]
     }
 }
 
