@@ -23,10 +23,13 @@ on:
         #     default: false    
 jobs:
     deploy-infra:
-        uses: ./.github/workflows/terraform.yml
-        if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
-        with:
-            aws_region:  ${{ inputs.aws_region }}
+        runs-on: ubuntu-latest
+        steps:
+          - name: Terraform Section
+            uses: ./.github/workflows/terraform.yml
+            if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
+            with:
+                aws_region:  ${{ inputs.aws_region }}
     # build-image:
     #     uses: ./.github/workflows/build_app.yml
     #     if: ${{ github.event.inputs['build-image'] == 'true' }}  
