@@ -1,0 +1,17 @@
+replicaCount: 1
+
+image:
+  repository: 092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-ecr-repo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+ingress:
+  enabled: true
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths: ["/"]
