@@ -1,16 +1,18 @@
 
+#TODO: Add the region variable to the provider block
+# provider "aws" {
+#   region = var.region
+# }
+
 provider "aws" {
   region = "us-east-1"
 }
 
 locals {
-  cluster_name = "wihomet-eks-${random_string.suffix.result}"
+  cluster_name = "wihomet-eks-cluster"
 }
 
-resource "random_string" "suffix" {
-  length  = 8
-  special = false
-}
+
 
 
 # Filter out local zones, which are not currently supported 
