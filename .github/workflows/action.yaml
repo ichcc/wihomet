@@ -35,6 +35,7 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ inputs.aws_region }}
   deploy-infra:
+    if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
     # if: ${{ github.event.inputs['deploy-imfra'] == 'true' }}
     runs-on: ubuntu-latest
     steps:
