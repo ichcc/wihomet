@@ -1,0 +1,6 @@
+infra/.terraform/*
+app/lib/*
+app/bin/*
+app/pyvenv.cfg
+infra/.terraform.lock.hcl
+wihomet-clock/terraform.tfstate
