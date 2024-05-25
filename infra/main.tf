@@ -95,6 +95,25 @@ resource "aws_eks_cluster" "wihomet-eks-cluster" {
     }
 }
 
+resource "aws_eks_node_group" "wihomet_eks_node_group" {
+    cluster_name    = aws_eks_cluster.wihomet-eks-cluster.name
+    node_group_name = "wihomet-eks-node-group"
+    node_role_arn   = aws_iam_role.wihoemt_eks_role.arn
+    subnet_ids      = [aws_subnet.wihoemt-subnet-1.id, aws_subnet.wihoemt-subnet-2.id]
+
+    scaling_config {
+        desired_size = 1
+        max_size     = 1
+        min_size     = 1
+    }
+
+    instance_types = ["t3.medium"]
+
+    depends_on = [
+        aws_eks_cluster.wihomet-eks-cluster,
+    ]
+}
+
 # Define ECR Repository
 resource "aws_ecr_repository" "wihomet-ecr-repo" {
     name = "wihomet-ecr-repo"
