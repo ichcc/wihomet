@@ -2,62 +2,105 @@ name: Deploy Services
 on:
   workflow_dispatch:
     inputs:
-        aws_region:
-            description: "AWS Region"
-            required: true
-            default: "us-east-1"
-        deploy-infra:
-            description: "Deploy infrastructure"
-            type: boolean
-            required: true
-            default: false
-        # build-image:
-        #     description: "Build Docker image"
-        #     type: boolean
-        #     required: true
-        #     default: false    
-        # helm-install:
-        #     description: "Install Helm chart"
-        #     type: boolean
-        #     required: true
-        #     default: false
+      aws_region:
+        description: "AWS Region"
+        required: true
+        default: "us-east-1"
+      deploy-infra:
+        description: "Deploy infrastructure"
+        type: boolean
+        required: true
+        default: false
+      build-image:
+        description: "Build Docker image"
+        type: boolean
+        required: true
+        default: false
+      helm-install:
+        description: "Install Helm chart"
+        type: boolean
+        required: true
+        default: false
 permissions:
-      id-token: write   # This is required for requesting the JWT
-      contents: read    # This is required for actions/checkout            
+  id-token: write # This is required for requesting the JWT
+  contents: read # This is required for actions/checkout
 jobs:
-    deploy-infra:
-        runs-on: ubuntu-latest
-        steps:
-          - name: Checkout
-            uses: actions/checkout@v4
-          - name: configure aws credentials
-            uses: aws-actions/configure-aws-credentials@v1.7.0
-            with:
-                role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
-                role-session-name: GitHub_to_AWS_via_FederatedOIDC
-                aws-region:  ${{ inputs.aws_region }}
-          - name: Checkout
-            uses: actions/checkout@v4
-          - name: Setup Terraform
-            uses: hashicorp/setup-terraform@v3
-          - name: Terraform Init
-            run: terraform -chdir=infra init
-          - name: Terraform Plan
-            run: terraform -chdir=infra plan
-        # - name: Confirm Apply
-        #   run: |
-        #       if [ "${{ github.event.inputs.confirmApply }}" != "yes" ]; then
-        #       echo "User did not confirm apply. Exiting."
-        #       exit 1
-        #       fi   
-          - name: Terraform Apply
-            run: terraform -chdir=infra apply -auto-approve          
+  deploy-infra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.aws_region }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Terraform Init
+        run: terraform -chdir=infra init
+      - name: Terraform Plan
+        run: terraform -chdir=infra plan
+      #TODO: Add confirmation step
+      # - name: Confirm Apply
+      #   run: |
+      #       if [ "${{ github.event.inputs.confirmApply }}" != "yes" ]; then
+      #       echo "User did not confirm apply. Exiting."
+      #       exit 1
+      #       fi
+      - name: Terraform Apply
+        run: terraform -chdir=infra apply -auto-approve
 
-    # build-image:
-    #     uses: ./.github/workflows/build_app.yml
-    #     if: ${{ github.event.inputs['build-image'] == 'true' }}  
-    #     secrets: inherit  
-    # helm-install:
-    #     uses: ./.github/workflows/helm_install.yml
-    #     if: ${{ github.event.inputs['helm-install'] == 'true' }}    
-    #     secrets: inherit
+  build-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.aws_region }}
+
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app
+          file: ./app/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          #TODO: Add dynamic tags
+          tags: 092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-ecr-repo:latest
+  helm-install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.aws_region }}
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig --name wihoemt-eks-cluster --region us-east-1
+      - name: Install Helm
+        uses: azure/setup-helm@v4.2.0
+      - name: Helm install wihomet
+        run: |
+          helm install wihomet-clock ./wihomet-clock
