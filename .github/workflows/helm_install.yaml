@@ -25,5 +25,5 @@ jobs:
         uses: azure/setup-kubectl@v3
       - name: Update kubeconfig
         run: |
-            aws eks update-kubeconfig --name wihomet-eks-cluster --region us-east-1
+            aws eks update-kubeconfig --name wihoemt-eks-cluster --region us-east-1
 
