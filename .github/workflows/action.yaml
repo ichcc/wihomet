@@ -25,9 +25,12 @@ jobs:
     deploy-infra:
         uses: ./.github/workflows/terraform.yml
         if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
+        secrets: inherit
     build-image:
         uses: ./.github/workflows/build_app.yml
-        if: ${{ github.event.inputs['build-image'] == 'true' }}    
+        if: ${{ github.event.inputs['build-image'] == 'true' }}  
+        secrets: inherit  
     helm-install:
         uses: ./.github/workflows/helm_install.yml
         if: ${{ github.event.inputs['helm-install'] == 'true' }}    
+        secrets: inherit
