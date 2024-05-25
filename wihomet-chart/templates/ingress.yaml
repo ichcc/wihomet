@@ -1,8 +1,9 @@
 {{- if .Values.ingress.enabled -}}
+{{- $fullName := include "wihomet-chart.fullname" . }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "wihomet-chart.fullname" . }}
+  name: {{ $fullName }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
 spec:
