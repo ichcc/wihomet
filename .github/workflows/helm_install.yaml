@@ -1,0 +1,29 @@
+on:
+  workflow_dispatch:
+    
+env:
+  
+  AWS_REGION : "us-east-1" 
+
+# Permission can be added at job level or workflow level    
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
+jobs:
+  HelmInstall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Update kubeconfig
+        run: |
+            aws eks update-kubeconfig --name wihomet-eks-cluster --region us-east-1
+
