@@ -1,0 +1,13 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction"
+      },
+      "Action": "s3:*",
+      "Resource": ["arn:aws:s3:::wihomet-terraform-state-wiliot", "arn:aws:s3:::wihomet-terraform-state-wiliot/*"]
+    }
+  ]
+}

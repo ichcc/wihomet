@@ -1,0 +1,13 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction"
+      },
+      "Action": "dynamodb:*",
+      "Resource": "arn:aws:dynamodb:us-east-1:092988563851:table/wihomet-lock-table"
+    }
+  ]
+}
