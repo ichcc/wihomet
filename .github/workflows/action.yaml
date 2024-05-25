@@ -11,7 +11,23 @@ on:
             type: boolean
             required: true
             default: false
+        build-image:
+            description: "Build Docker image"
+            type: boolean
+            required: true
+            default: false    
+        helm-install:
+            description: "Install Helm chart"
+            type: boolean
+            required: true
+            default: false    
 jobs:
     deploy-infra:
         uses: ./.github/workflows/terraform.yml
         if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
+    build-image:
+        uses: ./.github/workflows/build_app.yml
+        if: ${{ github.event.inputs['build-image'] == 'true' }}    
+    helm-install:
+        uses: ./.github/workflows/helm_install.yml
+        if: ${{ github.event.inputs['helm-install'] == 'true' }}    
