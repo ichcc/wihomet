@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir flask pytz
 EXPOSE 8080
 
 # Run clock.py when the container launches
-CMD ["python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD ["python", "clock.py"]
