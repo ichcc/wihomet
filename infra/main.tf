@@ -84,7 +84,7 @@ EOF
 resource "aws_eks_cluster" "wihomet-eks-cluster" {
     name     = "wihoemt-eks-cluster"
     role_arn = aws_iam_role.wihoemt_eks_role.arn
-    version  = "1.21"
+    version  = "1.29"
     vpc_config {
         subnet_ids = [aws_subnet.wihoemt-subnet.id]
     }
