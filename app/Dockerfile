@@ -7,11 +7,22 @@ WORKDIR /app
 # Add the current directory contents into the container at /app
 ADD . /app
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir flask pytz
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Install the required dependencies
+RUN pip install -r requirements.txt
+
+# Copy the current directory contents into the container at /app
+COPY . .
+
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
 # Run clock.py when the container launches
-CMD ["python", "clock.py"]
+# CMD ["python", "clock.py"]
+ENV FLASK_APP=clock.py
+
+# Run the Flask app
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
