@@ -26,4 +26,9 @@ jobs:
       - name: Update kubeconfig
         run: |
             aws eks update-kubeconfig --name wihoemt-eks-cluster --region us-east-1
+      - name: Install Helm
+        uses: azure/setup-helm@v4.2.0
+      - name: Helm install wihomet
+        run: |
+          helm install wihomet ./wihomet-chart      
 
