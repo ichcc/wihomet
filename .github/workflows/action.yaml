@@ -7,7 +7,7 @@ on:
         required: true
         default: "us-east-1"
       deploy-infra:
-        description: "Deploy infrastructure"
+        description: "Infrastructure"
         type: boolean
         required: true
         default: false
@@ -28,17 +28,18 @@ jobs:
 #   aws-login:
 #     runs-on: ubuntu-latest
 #     steps:
-#       - name: configure aws credentials
-#         uses: aws-actions/configure-aws-credentials@v1.7.0
-#         with:
-#           role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
-#           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-#           aws-region: ${{ inputs.aws_region }}
+
   deploy-infra:
     if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
     # if: ${{ github.event.inputs['deploy-imfra'] == 'true' }}
     runs-on: ubuntu-latest
     steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ inputs.aws_region }}
       - name: Checkout
         uses: actions/checkout@v4
 
