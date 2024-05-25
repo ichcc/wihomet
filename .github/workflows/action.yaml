@@ -25,6 +25,8 @@ jobs:
     deploy-infra:
         runs-on: ubuntu-latest
         steps:
+          - name: Checkout
+            uses: actions/checkout@v4
           - name: Terraform Section
             uses: ./.github/workflows/terraform.yml
             if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
