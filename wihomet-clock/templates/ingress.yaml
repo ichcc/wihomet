@@ -5,6 +5,10 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}'
+    alb.ingress.kubernetes.io/target-group-attributes: "deregistration_delay.timeout_seconds=30"
+    alb.ingress.kubernetes.io/backend-protocol: HTTP
+    
   labels:
     {{- include "wihomet-clock.labels" . | nindent 4 }}
 spec:
