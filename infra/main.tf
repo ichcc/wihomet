@@ -135,6 +135,6 @@ resource "aws_ecr_repository" "wihomet-ecr-repo" {
     name = "wihomet-ecr-repo"
 }
 
-resource "aws_ecr_repository" "wihomet-helm-repo" {
-    name = "wihomet-helm-repo"
+resource "aws_ecr_repository" "wihomet-clock" {
+    name = "wihomet-clock"
 }
