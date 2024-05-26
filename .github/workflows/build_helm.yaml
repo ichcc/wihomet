@@ -1,0 +1,33 @@
+name: Build and Push Helm Chart
+
+on:
+  workflow_dispatch: 
+
+env:
+  ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
+  AWS_REGION: us-east-1
+
+jobs:
+  HelmInstall:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v4
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region:  us-east-1
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: '3'
+      - name: Package Helm Chart
+        run: helm package ./wihomet-clock
+        
+      - name: Push Helm Chart to ECR
+        run: |
+           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+            helm push ./wihomet-clock $ECR_REGISTRY/wihomet-ecr-repo:$GITHUB_SHA
+
