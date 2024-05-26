@@ -134,3 +134,7 @@ module "irsa-ebs-csi" {
 resource "aws_ecr_repository" "wihomet-ecr-repo" {
     name = "wihomet-ecr-repo"
 }
+
+resource "aws_ecr_repository" "wihomet-helm-repo" {
+    name = "wihomet-helm-repo"
+}
