@@ -51,16 +51,13 @@ jobs:
             platforms: linux/amd64,linux/arm64
             push: true
             tags: ${{env.ECR_REGISTRY}}/wihomet-ecr-repo:${{ steps.short-sha.outputs.sha }}
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Update kubeconfig
+        run: |
+            aws eks update-kubeconfig --name wihoemt-eks-cluster --region us-east-1
+            
       - name: Update Helm Chart
         run: |
           helm upgrade wihomet-clock ./wihomet-clock \
           --set image.tag=${{ steps.short-sha.outputs.sha }}
-
-      - name: Package Helm Chart
-        run: helm package ./wihomet-clock
-        
-      - name: Push Helm Chart to ECR
-        run: |
-           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-           helm push ./wihomet-clock-${{ steps.short-sha.outputs.sha }}.tgz oci://$ECR_REGISTRY/
-    
