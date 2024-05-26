@@ -34,3 +34,6 @@ jobs:
   build-image:
     uses: ./.github/workflows/build_app.yaml
     if: ${{ github.event.inputs['build-image'] == 'true' }}
+    with:
+      aws_region: ${{ inputs.aws_region }}
+      ecr_registry: "${{ inputs.ecr_registry }}"
