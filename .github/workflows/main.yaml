@@ -15,16 +15,16 @@ on:
         description: "ECR Registry"
         required: true
         default: "092988563851.dkr.ecr.us-east-1.amazonaws.com"
-    #   deploy-infra:
-    #     description: "Infrastructure"
-    #     type: boolean
-    #     required: true
-    #     default: false
       build-image:
         description: "Build Update Heml"
         type: boolean
         required: true
         default: false
+      deploy-infra:
+        description: "Update Infra"
+        type: boolean
+        required: true
+        default: false  
     #   helm-install:
     #     description: "Install Helm chart"
     #     type: boolean
@@ -37,3 +37,9 @@ jobs:
     with:
       aws_region: ${{ inputs.aws_region }}
       ecr_registry: "${{ inputs.ecr_registry }}"
+
+  deploy-infra:
+    uses: ./.github/workflows/terraform.yaml
+    if: ${{ github.event.inputs['deploy-infra'] == 'true' }}
+    with:
+      aws_region: ${{ inputs.aws_region }}   
