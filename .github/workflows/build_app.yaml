@@ -1,11 +1,18 @@
 
 
 on:
-  workflow_dispatch:
+   workflow_call:
+     inputs:
+       aws_region:
+         required: true
+         type: string
+       ecr_registry:
+         required: true
+         type: string  
 
 env:
-  AWS_REGION: us-east-1
-  ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
+  # AWS_REGION: us-east-1
+  # ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
 
 
 # Permission can be added at job level or workflow level    
@@ -23,7 +30,7 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::092988563851:role/GitHubAction-AssumeRoleWithAction
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region:  ${{ env.AWS_REGION }}
+          aws-region:  ${{ inputs.aws_region }}
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -50,7 +57,7 @@ jobs:
             file: ./app/Dockerfile
             platforms: linux/amd64,linux/arm64
             push: true
-            tags: ${{env.ECR_REGISTRY}}/wihomet-ecr-repo:${{ steps.short-sha.outputs.sha }}
+            tags: ${{inputs.ecr_registry}}/wihomet-ecr-repo:${{ steps.short-sha.outputs.sha }}
       - name: Set up kubectl
         uses: azure/setup-kubectl@v3
       - name: Update kubeconfig
