@@ -11,6 +11,10 @@ on:
         description: "AWS Region"
         required: true
         default: "us-east-1"
+      ecr_registry:  
+        description: "ECR Registry"
+        required: true
+        default: "092988563851.dkr.ecr.us-east-1.amazonaws.com"
     #   deploy-infra:
     #     description: "Infrastructure"
     #     type: boolean
@@ -28,5 +32,5 @@ on:
     #     default: false
 jobs:
   build-image:
-    uses: ./.github/workflows/build_helm.yaml
+    uses: ./.github/workflows/build_app.yaml
     if: ${{ github.event.inputs['build-image'] == 'true' }}
