@@ -51,3 +51,16 @@ jobs:
             platforms: linux/amd64,linux/arm64
             push: true
             tags: ${{env.ECR_REGISTRY}}/wihomet-ecr-repo:${{ steps.short-sha.outputs.sha }}
+      - name: Update Helm Chart
+        run: |
+          helm upgrade wihomet-clock ./wihomet-clock \
+          --set image.tag=${{ steps.short-sha.outputs.sha }}
+
+      - name: Package Helm Chart
+        run: helm package ./wihomet-clock
+        
+      - name: Push Helm Chart to ECR
+        run: |
+           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+           helm push ./wihomet-clock-${{ steps.short-sha.outputs.sha }}.tgz oci://$ECR_REGISTRY/
+    
