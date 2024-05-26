@@ -30,6 +30,17 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # Get a short version of the commit SHA
+      - uses: benjlevesque/short-sha@v2.2
+        id: short-sha
+        with:
+          length: 6
+
+      # Print the short SHA
+      - run: echo $SHA
+        env:
+          SHA: ${{ steps.short-sha.outputs.sha }}
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v5
@@ -38,4 +49,4 @@ jobs:
             file: ./app/Dockerfile
             platforms: linux/amd64,linux/arm64
             push: true
-            tags: 092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-ecr-repo:latest
+            tags: 092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-ecr-repo:${{ steps.short-sha.outputs.sha }}
