@@ -1,8 +1,18 @@
 # Use an official Python runtime as a parent image
 FROM python:3.12-slim-bullseye
 
+RUN useradd -m myuser
+USER myuser
+
 # Set the working directory in the container to /app
 WORKDIR /app
+
+
+# Install virtualenv
+RUN pip install virtualenv
+
+# Create a virtual environment
+RUN python -m virtualenv /env
 
 # Add the current directory contents into the container at /app
 ADD . /app
