@@ -27,11 +27,13 @@ jobs:
         run: terraform -chdir=infra init
       - name: Terraform Plan
         run: terraform -chdir=infra plan
-      # - name: Confirm Apply
-      #   run: |
-      #       if [ "${{ github.event.inputs.confirmApply }}" != "yes" ]; then
-      #       echo "User did not confirm apply. Exiting."
-      #       exit 1
-      #       fi   
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: ichcc
+          minimum-approvals: 1
+          issue-title: "Infra Update"
+          issue-body: "Review the terraform plan, then approve or deny"
+          exclude-workflow-initiator-as-approver: false
       - name: Terraform Apply
         run: terraform -chdir=infra apply -auto-approve
