@@ -30,7 +30,7 @@ jobs:
       - uses: trstringer/manual-approval@v1
         with:
           secret: ${{ github.TOKEN }}
-          approvers: ichcc
+          # approvers: ichcc
           minimum-approvals: 1
           timeout-minutes: 60
           issue-title: "Infra Update"
