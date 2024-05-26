@@ -1,0 +1,27 @@
+name: Dashboard
+on:
+  workflow_dispatch:
+    inputs:
+      aws_region:
+        description: "AWS Region"
+        required: true
+        default: "us-east-1"
+    #   deploy-infra:
+    #     description: "Infrastructure"
+    #     type: boolean
+    #     required: true
+    #     default: false
+      build-image:
+        description: "Build Update Heml"
+        type: boolean
+        required: true
+        default: false
+    #   helm-install:
+    #     description: "Install Helm chart"
+    #     type: boolean
+    #     required: true
+    #     default: false
+jobs:
+  build-image:
+    uses: ./.github/workflows/build_helm.yaml
+    if: ${{ github.event.inputs['build-image'] == 'true' }}

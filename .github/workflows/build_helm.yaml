@@ -1,5 +1,5 @@
 on:
-  workflow_dispatch: 
+    workflow_call:
 
 env:
   ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
