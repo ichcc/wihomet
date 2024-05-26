@@ -112,4 +112,4 @@ jobs:
         uses: azure/setup-helm@v4.2.0
       - name: Helm install wihomet
         run: |
-          helm install wihomet-clock ./wihomet-clock
+          helm install wihomet-clock oci://092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-clock --version 0.1.0
