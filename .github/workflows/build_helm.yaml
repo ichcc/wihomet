@@ -33,5 +33,5 @@ jobs:
       - name: Push Helm Chart to ECR
         run: |
            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-            helm push ./wihomet-clock $ECR_REGISTRY/wihomet-ecr-repo:$GITHUB_SHA
+           helm push ./wihomet-clock $ECR_REGISTRY/wihomet-helm-repo:$GITHUB_SHA
 
