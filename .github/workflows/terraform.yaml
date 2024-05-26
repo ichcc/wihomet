@@ -27,14 +27,14 @@ jobs:
         run: terraform -chdir=infra init
       - name: Terraform Plan
         run: terraform -chdir=infra plan
-      - uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          # approvers: ichcc
-          minimum-approvals: 1
-          timeout-minutes: 60
-          issue-title: "Infra Update"
-          issue-body: "Review the terraform plan, then approve or deny"
-          exclude-workflow-initiator-as-approver: false
+      # - uses: trstringer/manual-approval@v1
+      #   with:
+      #     approvers: ichcc
+      #     secret: ${{ github.TOKEN }}
+      #     minimum-approvals: 1
+      #     timeout-minutes: 60
+      #     issue-title: "Infra Update"
+      #     issue-body: "Review the terraform plan, then approve or deny"
+      #     exclude-workflow-initiator-as-approver: false
       - name: Terraform Apply
         run: terraform -chdir=infra apply -auto-approve
