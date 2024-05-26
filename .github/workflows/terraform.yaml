@@ -32,6 +32,7 @@ jobs:
           secret: ${{ github.TOKEN }}
           approvers: ichcc
           minimum-approvals: 1
+          timeout-minutes: 60
           issue-title: "Infra Update"
           issue-body: "Review the terraform plan, then approve or deny"
           exclude-workflow-initiator-as-approver: false
