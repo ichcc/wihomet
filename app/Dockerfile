@@ -12,7 +12,7 @@ WORKDIR /app
 RUN pip install virtualenv
 
 # Create a virtual environment
-RUN python -m virtualenv /env
+RUN python -m venv .
 
 # Add the current directory contents into the container at /app
 ADD . /app
