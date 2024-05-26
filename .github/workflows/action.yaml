@@ -112,4 +112,5 @@ jobs:
         uses: azure/setup-helm@v4.2.0
       - name: Helm install wihomet
         run: |
+          aws ecr get-login-password  --region us-east-1 | helm registry login  --username AWS  --password-stdin 092988563851.dkr.ecr.us-east-1.amazonaws.com
           helm install wihomet-clock oci://092988563851.dkr.ecr.us-east-1.amazonaws.com/wihomet-clock --version 0.1.0
