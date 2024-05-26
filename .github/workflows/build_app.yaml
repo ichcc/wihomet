@@ -10,11 +10,6 @@ on:
          required: true
          type: string  
 
-# env:
-  # AWS_REGION: us-east-1
-  # ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
-
-
 # Permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
@@ -62,7 +57,7 @@ jobs:
         uses: azure/setup-kubectl@v3
       - name: Update kubeconfig
         run: |
-            aws eks update-kubeconfig --name wihomet-eks-cluster --region us-east-1
+            aws eks update-kubeconfig --name wihomet-eks-cluster --region ${{inputs.aws_region}}
 
       - name: Update Helm Chart
         run: |
