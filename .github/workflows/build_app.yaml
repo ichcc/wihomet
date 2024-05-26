@@ -10,7 +10,7 @@ on:
          required: true
          type: string  
 
-env:
+# env:
   # AWS_REGION: us-east-1
   # ECR_REGISTRY: 092988563851.dkr.ecr.us-east-1.amazonaws.com
 
