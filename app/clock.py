@@ -18,6 +18,8 @@ def home():
             <p>Time in Berlin: {time_Berlin}</p>
             <p>Time in Tokyo: {time_Tokyo}</p>
             <p>Local time: {time_local}</p>
+            <p>（◎＞Ｕ＜◎）</p>
+        </body>
         </body>
     </html>
     """
