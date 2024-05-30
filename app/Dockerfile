@@ -18,7 +18,7 @@ RUN python -m venv venv
 ADD . /app
 
 # Install the required dependencies
-RUN pip install -r requirements.txt
+RUN /app/venv/bin/pip install -r requirements.txt
 
 
 
