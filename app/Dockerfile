@@ -12,20 +12,15 @@ WORKDIR /app
 RUN pip install virtualenv
 
 # Create a virtual environment
-RUN python -m venv .
+RUN python -m venv venv
 
 # Add the current directory contents into the container at /app
 ADD . /app
 
-# Copy the requirements file into the container
-# COPY requirements.txt .
-
-
-# Copy the current directory contents into the container at /app
-COPY . .
-
 # Install the required dependencies
 RUN pip install -r requirements.txt
+
+
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
@@ -33,6 +28,9 @@ EXPOSE 8080
 # Run clock.py when the container launches
 # CMD ["python", "clock.py"]
 ENV FLASK_APP=clock.py
+
+# Adjust the PATH to include the virtual environment
+ENV PATH="/app/venv/bin:$PATH"
 
 # Run the Flask app
 CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
