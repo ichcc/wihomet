@@ -18,13 +18,13 @@ RUN python -m venv .
 ADD . /app
 
 # Copy the requirements file into the container
-COPY requirements.txt .
+# COPY requirements.txt .
 
 # Install the required dependencies
 RUN pip install -r requirements.txt
 
 # Copy the current directory contents into the container at /app
-COPY . .
+# COPY . .
 
 
 # Make port 8080 available to the world outside this container
