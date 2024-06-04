@@ -3,6 +3,7 @@
 ## Preparation
 
 ```bash
+cd ./infra
 aws s3api create-bucket --bucket wihomet-terraform-state-wiliot --region us-east-1
 aws dynamodb create-table --table-name wihomet-lock-table --attribute-definitions AttributeName=LockID,AttributeType=S --key-schema AttributeName=LockID,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 --region us-east-1
 aws iam create-open-id-connect-provider --url 'https://token.actions.githubusercontent.com' --thumbprint-list "6938fd4d98bab03faadb97b34396831e3780aea1" --client-id-list 'sts.amazonaws.com'
