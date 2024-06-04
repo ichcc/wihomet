@@ -18,5 +18,5 @@ The application is deployed using GitHub Actions. The workflow is defined in the
 
 ## Not realized
 
-Service not exposed to world, stuck a bit with igress/load balancer/helm
+
 All actions currently in manual mode.
